@@ -224,6 +224,7 @@
                         layer.prompt({
                             title: '編輯',
                             maxmin: false,
+                            btn: ["確認", "取消"],
                             value: options.$trigger.html(),
                         }, function (value, index) {
                             $.ajax({
@@ -359,6 +360,7 @@
                 layer.prompt({
                     title: '添加',
                     maxmin: false,
+                    btn: ["確認", "取消"],
                 }, function (value, index) {
                     $.ajax({
                         type: 'POST',

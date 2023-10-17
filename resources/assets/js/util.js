@@ -141,7 +141,7 @@ function rightTableHtml() {
     html += '</ul>';
     html += '</div>';
     html += '<button type="button" class="btn btn-primary grid-refresh btn-mini btn-outline media_selector_toolbar_refresh" style="margin-right:3px"><i class="feather icon-refresh-cw"></i> 刷新</button>';
-    html += '<button type="button" class="btn btn-primary grid-refresh btn-mini btn-outline media_selector_toolbar_filter" style="margin-right:3px"><i class="feather icon-filter"></i> 篩選</button>';
+    // html += '<button type="button" class="btn btn-primary grid-refresh btn-mini btn-outline media_selector_toolbar_filter" style="margin-right:3px"><i class="feather icon-filter"></i> 篩選</button>';
     html += '<button type="button" class="btn btn-primary grid-refresh btn-mini btn-outline media_selector_toolbar_choose" style="margin-right:3px"><i class="fa fa-check"></i> 選擇</button>';
     html += '<span style="position: relative;">';
     html += '<label class="btn btn-success grid-refresh btn-mini btn-outline"><i class="fa fa-upload"></i> 上傳';
