@@ -43,10 +43,15 @@ class MediaController
         $dataList = [];
 
         foreach ($list as $value) {
+            if ($value->file_ext === 'svg') {
+                $type = 'image';
+            } else {
+                $type = $value->type;
+            }
             $dataList[] = array(
                 'id'               => $value->id,
                 'media_group_name' => $value->mediaGroup->name ?? '無',
-                'media_type'       => $value->type,
+                'media_type'       => $type,
                 'path'             => $value->path,
                 'url'              => Storage::disk(config('admin.upload.disk'))->url($value->path),
                 'size'             => FileUtil::formatBytes($value->size),
