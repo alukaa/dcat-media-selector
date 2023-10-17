@@ -45,7 +45,7 @@ class MediaController
         foreach ($list as $value) {
             $dataList[] = array(
                 'id'               => $value->id,
-                'media_group_name' => $value->mediaGroup->name ?? '无',
+                'media_group_name' => $value->mediaGroup->name ?? '無',
                 'media_type'       => $value->type,
                 'path'             => $value->path,
                 'url'              => Storage::disk(config('admin.upload.disk'))->url($value->path),
@@ -106,7 +106,7 @@ class MediaController
 
         return $result
             ? $this->success(['name' => Helper::basename($path), 'path' => $path, 'media_type' => $type, 'url' => $disk->url($path)])
-            : $this->failed('上传失败');
+            : $this->failed('上傳失敗');
     }
 
     public function delete(Request $request)

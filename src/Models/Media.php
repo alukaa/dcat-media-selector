@@ -11,6 +11,8 @@ class Media extends Model
 
     protected $fillable = ['admin_id', 'media_group_id', 'path', 'file_name', 'size', 'type', 'file_ext', 'disk', 'meta', 'created_at'];
 
+    protected $table = 'jx_media';
+
     public $timestamps = false;
 
     public function mediaGroup()
