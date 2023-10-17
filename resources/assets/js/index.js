@@ -99,7 +99,7 @@
 
             var html = '<li>';
             html += '<input type="hidden" value="' + data.data.path + '">';
-            html += '<a href="' + data.data.url + '" title="' + data.data.name + '" target="_blank" class="thumbnail">';
+            html += '<a href="' + data.data.url + '" title="' + (data.data.name || '') + '" target="_blank" class="thumbnail">';
             html += fileDisplayHtml({media_type: data.data.media_type, url: data.data.url});
             html += '</a>';
             html += '<button type="button" class="btn btn-block btn-danger btn-xs remove_media_display">';
