@@ -23,7 +23,7 @@ class FileUtil
      */
     public static function verifyFileType($file)
     {
-        $extension = \Illuminate\Support\Facades\File::guessExtension($file);
+        $extension = $file->getClientOriginalExtension()($file);
         foreach (static::$fileTypes as $type => $regex) {
             if (preg_match("/^($regex)$/i", $extension) !== 0)
                 return $type;
