@@ -1219,71 +1219,71 @@
 
 	$__default["default"].fn.bootstrapTable.locales['zh-CN'] = $__default["default"].fn.bootstrapTable.locales['zh'] = {
 	  formatCopyRows: function formatCopyRows() {
-	    return 'Copy Rows';
+	    return '複製行';
 	  },
 	  formatPrint: function formatPrint() {
-	    return 'Print';
+	    return '打印';
 	  },
 	  formatLoadingMessage: function formatLoadingMessage() {
-	    return '正在努力地加载数据中，请稍候';
+	    return '正在努力地加載數據中，請稍候';
 	  },
 	  formatRecordsPerPage: function formatRecordsPerPage(pageNumber) {
-	    return "\u6BCF\u9875\u663E\u793A ".concat(pageNumber, " \u6761\u8BB0\u5F55");
+	    return "每頁顯示 ".concat(pageNumber, " 筆記錄");
 	  },
 	  formatShowingRows: function formatShowingRows(pageFrom, pageTo, totalRows, totalNotFiltered) {
 	    if (totalNotFiltered !== undefined && totalNotFiltered > 0 && totalNotFiltered > totalRows) {
-	      return "\u663E\u793A\u7B2C ".concat(pageFrom, " \u5230\u7B2C ").concat(pageTo, " \u6761\u8BB0\u5F55\uFF0C\u603B\u5171 ").concat(totalRows, " \u6761\u8BB0\u5F55\uFF08\u4ECE ").concat(totalNotFiltered, " \u603B\u8BB0\u5F55\u4E2D\u8FC7\u6EE4\uFF09");
+	      return "顯示第 ".concat(pageFrom, " 到第 ").concat(pageTo, " 筆記錄，總共 ").concat(totalRows, " 筆記錄（從 ").concat(totalNotFiltered, " 總記錄中過濾）");
 	    }
 
-	    return "\u663E\u793A\u7B2C ".concat(pageFrom, " \u5230\u7B2C ").concat(pageTo, " \u6761\u8BB0\u5F55\uFF0C\u603B\u5171 ").concat(totalRows, " \u6761\u8BB0\u5F55");
+	    return "显示第 ".concat(pageFrom, " 到第 ").concat(pageTo, " 筆記錄，總共 ").concat(totalRows, " 筆記錄");
 	  },
 	  formatSRPaginationPreText: function formatSRPaginationPreText() {
-	    return '上一页';
+	    return '上一頁';
 	  },
 	  formatSRPaginationPageText: function formatSRPaginationPageText(page) {
-	    return "\u7B2C".concat(page, "\u9875");
+	    return "第".concat(page, "頁");
 	  },
 	  formatSRPaginationNextText: function formatSRPaginationNextText() {
-	    return '下一页';
+	    return '下一頁';
 	  },
 	  formatDetailPagination: function formatDetailPagination(totalRows) {
-	    return "\u603B\u5171 ".concat(totalRows, " \u6761\u8BB0\u5F55");
+	    return "總共 ".concat(totalRows, " 筆記錄");
 	  },
 	  formatClearSearch: function formatClearSearch() {
-	    return '清空过滤';
+	    return '清空過濾';
 	  },
 	  formatSearch: function formatSearch() {
-	    return '搜索';
+	    return '搜尋';
 	  },
 	  formatNoMatches: function formatNoMatches() {
-	    return '没有找到匹配的记录';
+	    return '沒有找到符合的記錄';
 	  },
 	  formatPaginationSwitch: function formatPaginationSwitch() {
-	    return '隐藏/显示分页';
+	    return '隱藏/顯示分頁';
 	  },
 	  formatPaginationSwitchDown: function formatPaginationSwitchDown() {
-	    return '显示分页';
+	    return '顯示分頁';
 	  },
 	  formatPaginationSwitchUp: function formatPaginationSwitchUp() {
-	    return '隐藏分页';
+	    return '隱藏分頁';
 	  },
 	  formatRefresh: function formatRefresh() {
 	    return '刷新';
 	  },
 	  formatToggle: function formatToggle() {
-	    return '切换';
+	    return '切換';
 	  },
 	  formatToggleOn: function formatToggleOn() {
-	    return '显示卡片视图';
+	    return '顯示卡片視圖';
 	  },
 	  formatToggleOff: function formatToggleOff() {
-	    return '隐藏卡片视图';
+	    return '隱藏卡片視圖';
 	  },
 	  formatColumns: function formatColumns() {
 	    return '列';
 	  },
 	  formatColumnsToggleAll: function formatColumnsToggleAll() {
-	    return '切换所有';
+	    return '切換所有';
 	  },
 	  formatFullscreen: function formatFullscreen() {
 	    return '全屏';
@@ -1295,25 +1295,25 @@
 	    return '自动刷新';
 	  },
 	  formatExport: function formatExport() {
-	    return '导出数据';
+	    return '匯出數據';
 	  },
 	  formatJumpTo: function formatJumpTo() {
-	    return '跳转';
+	    return '跳轉';
 	  },
 	  formatAdvancedSearch: function formatAdvancedSearch() {
-	    return '高级搜索';
+	    return '進階搜尋';
 	  },
 	  formatAdvancedCloseButton: function formatAdvancedCloseButton() {
-	    return '关闭';
+	    return '關閉';
 	  },
 	  formatFilterControlSwitch: function formatFilterControlSwitch() {
-	    return '隐藏/显示过滤控制';
+	    return '隱藏/顯示過濾控制';
 	  },
 	  formatFilterControlSwitchHide: function formatFilterControlSwitchHide() {
-	    return '隐藏过滤控制';
+	    return '隱藏過濾控制';
 	  },
 	  formatFilterControlSwitchShow: function formatFilterControlSwitchShow() {
-	    return '显示过滤控制';
+	    return '顯示過濾控制';
 	  }
 	};
 	$__default["default"].extend($__default["default"].fn.bootstrapTable.defaults, $__default["default"].fn.bootstrapTable.locales['zh-CN']);
