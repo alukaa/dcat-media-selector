@@ -252,6 +252,9 @@
                                 success: function () {
                                     options.$trigger.remove();
                                     Dcat.success('刪除成功');
+
+                                    //  刪除成功,更新 grouplist
+                                    delete _this.options.grouplist[options.$trigger.data('id')]
                                 },
                                 error: function (XmlHttpRequest) {
                                     Dcat.error(XmlHttpRequest.responseJSON.message);
@@ -370,6 +373,7 @@
                         success: function (data) {
                             layer.close(index);
                             $('.media_selector_media_group').append('<a class="list-group-item list-group-item-action menu" data-toggle="list" data-id="' + data.data + '" href="javascript:;">' + value + '</a>');
+                            _this.options.grouplist = Object.assign(_this.options.grouplist, { [data.data]: value })
                             Dcat.success('添加成功');
                         },
                         error: function (XmlHttpRequest) {
