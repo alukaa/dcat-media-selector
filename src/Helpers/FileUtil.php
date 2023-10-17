@@ -49,12 +49,19 @@ class FileUtil
     {
         switch (self::verifyFileType($file)) {
             case 'image':
-                $manager = new ImageManager();
-                $image   = $manager->make($file);
-                $meta    = [
-                    'width'  => $image->getWidth(),
-                    'height' => $image->getHeight()
-                ];
+                try {
+                    $manager = new ImageManager();
+                    $image   = $manager->make($file);
+                    $meta    = [
+                        'width'  => $image->getWidth(),
+                        'height' => $image->getHeight()
+                    ];
+                } catch (\Throwable $e) {
+                    $meta = [
+                        'width'  => 0,
+                        'height' => 0
+                    ];
+                }
                 break;
             case 'video':
             case 'audio':
@@ -66,7 +73,7 @@ class FileUtil
                 $meta = [
                     'width'  => 0,
                     'height' => 0
-                ];;
+                ];
         }
         return $meta;
     }
