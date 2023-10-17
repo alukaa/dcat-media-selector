@@ -43,7 +43,7 @@ class MediaController
         $dataList = [];
 
         foreach ($list as $value) {
-            if ($value->file_ext === 'svg') {
+            if ($value->file_ext === 'svg' || $value->file_text === 'webp') {
                 $type = 'image';
             } else {
                 $type = $value->type;
