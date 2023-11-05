@@ -63,7 +63,9 @@ class ImgCompress {
         $new_height = $this->imageinfo['height'] * $this->percent;
         $image_thump = imagecreatetruecolor($new_width,$new_height);
 
-        $this->setTransparency($image_thump, $this->image);
+        if ($this->imageinfo['type'] === 'png') {
+            $this->setPngTransparent($image_thump);
+        }
 
         //将原图复制带图片载体上面，并且按照一定比例压缩,极大的保持了清晰度
         imagecopyresampled($image_thump,$this->image,0,0,0,0,$new_width,$new_height,$this->imageinfo['width'],$this->imageinfo['height']);
@@ -71,6 +73,33 @@ class ImgCompress {
         $this->image = $image_thump;
     }
 
+    /**
+     * 将png黑色背景换成透明
+     * @param $image_thump
+     * @return void
+     */
+    private function setPngTransparent($image_thump)
+    {
+        $background = imagecolorallocate($image_thump , 0, 0, 0);
+        // removing the black from the placeholder
+        imagecolortransparent($image_thump, $background);
+
+        // turning off alpha blending (to ensure alpha channel information
+        // is preserved, rather than removed (blending with the rest of the
+        // image in the form of black))
+        imagealphablending($image_thump, false);
+
+        // turning on alpha channel information saving (to ensure the full range
+        // of transparency is preserved)
+        imagesavealpha($image_thump, true);
+    }
+
+    /**
+     * png 全透明
+     * @param $new_image
+     * @param $image_source
+     * @return void
+     */
     private function setTransparency($new_image,$image_source)
     {
         $transparencyIndex = imagecolortransparent($image_source);
