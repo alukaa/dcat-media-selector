@@ -62,11 +62,29 @@ class ImgCompress {
         $new_width = $this->imageinfo['width'] * $this->percent;
         $new_height = $this->imageinfo['height'] * $this->percent;
         $image_thump = imagecreatetruecolor($new_width,$new_height);
+
+        $this->setTransparency($image_thump, $this->image);
+
         //将原图复制带图片载体上面，并且按照一定比例压缩,极大的保持了清晰度
         imagecopyresampled($image_thump,$this->image,0,0,0,0,$new_width,$new_height,$this->imageinfo['width'],$this->imageinfo['height']);
         imagedestroy($this->image);
         $this->image = $image_thump;
     }
+
+    private function setTransparency($new_image,$image_source)
+    {
+        $transparencyIndex = imagecolortransparent($image_source);
+        $transparencyColor = array('red' => 255, 'green' => 255, 'blue' => 255);
+
+        if ($transparencyIndex >= 0) {
+            $transparencyColor    = imagecolorsforindex($image_source, $transparencyIndex);
+        }
+
+        $transparencyIndex    = imagecolorallocate($new_image, $transparencyColor['red'], $transparencyColor['green'], $transparencyColor['blue']);
+        imagefill($new_image, 0, 0, $transparencyIndex);
+        imagecolortransparent($new_image, $transparencyIndex);
+    }
+
     /**
      * 输出图片:保存图片则用saveImage()
      */
