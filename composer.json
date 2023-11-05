@@ -18,7 +18,8 @@
   "require": {
     "php": ">=7.1.0",
     "dcat/laravel-admin": "~2.0",
-    "intervention/image": "^2.5"
+    "intervention/image": "^2.5",
+    "ext-gd": "*"
   },
   "autoload": {
     "psr-4": {

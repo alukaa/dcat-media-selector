@@ -13,7 +13,7 @@ class CreateMediaGroupTable extends Migration
      */
     public function up()
     {
-        Schema::create('media_group', function (Blueprint $table) {
+        Schema::create('jx_media_group', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('admin_id')->comment('创建管理员id');
             $table->string('name')->comment('分组名称');
@@ -21,7 +21,7 @@ class CreateMediaGroupTable extends Migration
             $table->integer('updated_at')->nullable()->comment("更新时间");
             $table->index(['admin_id']);
         });
-        \DB::statement("alter table media_group comment '媒体分组'; ");
+        \DB::statement("alter table jx_media_group comment '媒体分组'; ");
     }
 
     /**
@@ -31,6 +31,6 @@ class CreateMediaGroupTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('media_group');
+        Schema::dropIfExists('jx_media_group');
     }
 }

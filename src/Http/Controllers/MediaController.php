@@ -6,8 +6,10 @@ use Dcat\Admin\Admin;
 use Dcat\Admin\Support\Helper;
 use DeMemory\DcatMediaSelector\Helpers\ApiResponse;
 use DeMemory\DcatMediaSelector\Helpers\FileUtil;
+use DeMemory\DcatMediaSelector\Helpers\ImgCompress;
 use DeMemory\DcatMediaSelector\Models\Media;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -84,34 +86,38 @@ class MediaController
         $fileNameIsEncrypt = $move->fileNameIsEncrypt;
 
         $disk = Storage::disk(config('admin.upload.disk'));
+        $disk->makeDirectory($dir);
 
         $newName = self::_getFileName($file, $fileNameIsEncrypt);
 
-        $result = $disk->putFileAs($dir, $file, $newName);
-
-        $path = "$dir/$newName";
-
-        $type = FileUtil::verifyFileType($file);
-
-        if ($result) {
-            $data = [
-                'admin_id'       => Admin::user()->id ?? 0,
-                'media_group_id' => $mediaGroupId,
-                'path'           => $path,
-                'file_name'      => $newName,
-                'size'           => $file->getSize(),
-                'type'           => $type,
-                'file_ext'       => $file->getClientOriginalExtension(),
-                'disk'           => config('admin.upload.disk'),
-                'meta'           => json_encode(FileUtil::metaInfo($file)),
-                'created_at'     => time()
-            ];
-            Media::query()->insert($data);
+        // 压缩图片
+        try {
+            (new ImgCompress($file->getRealPath(), 1))->compressImg($disk->path($dir) . '/' . $newName);
+            $fileSize = filesize($disk->path($dir) . '/' . $newName);
+        } catch(\Exception $e) {
+            Log::error($e->getFile() . $e->getLine() . $e->getMessage());
+            $disk->putFileAs($dir, $file, $newName);
+            $fileSize = $file->getSize();
         }
 
-        return $result
-            ? $this->success(['name' => Helper::basename($path), 'path' => $path, 'media_type' => $type, 'url' => $disk->url($path)])
-            : $this->failed('上傳失敗');
+        $path = "$dir/$newName";
+        $type = FileUtil::verifyFileType($file);
+
+        $data = [
+            'admin_id'       => Admin::user()->id ?? 0,
+            'media_group_id' => $mediaGroupId,
+            'path'           => $path,
+            'file_name'      => $newName,
+            'size'           => $fileSize,
+            'type'           => $type,
+            'file_ext'       => $file->getClientOriginalExtension(),
+            'disk'           => config('admin.upload.disk'),
+            'meta'           => json_encode(FileUtil::metaInfo($file)),
+            'created_at'     => time()
+        ];
+        Media::query()->insert($data);
+
+        return $this->success(['name' => Helper::basename($path), 'path' => $path, 'media_type' => $type, 'url' => $disk->url($path)]);
     }
 
     public function delete(Request $request)
