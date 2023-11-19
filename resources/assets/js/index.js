@@ -63,25 +63,31 @@
             });
 
             _this.options.$el.find('button').eq(1).off('click').on('click', function () {
-                var table = '<div class="row">';
-                // 分组
-                table += _this.leftGroupHtml();
-                // 表单
-                table += _this.rightTableQueryFormHtml();
-                // 工具栏
-                table += rightTableHtml();
-                table += '</div>';
+                _this.showMediaWindow();
+            });
+        },
 
-                layer.open({
-                    id: 'media_selector',
-                    area: config.area,
-                    title: _this.options.label,
-                    btn: [],
-                    content: table,
-                    success: function (layero, index) {
-                        _this.list(index);
-                    }
-                });
+        showMediaWindow: function () {
+            var _this = this;
+            var table = '<div class="row">';
+            // 分组
+            table += _this.leftGroupHtml();
+            // 表单
+            table += _this.rightTableQueryFormHtml();
+            // 工具栏
+            table += rightTableHtml();
+            table += '</div>';
+
+            layer.open({
+                id: 'media_selector',
+                area: ['60%', '90%'],
+                title: _this.options.label,
+                btn: [],
+                content: table,
+                offset: '10px',
+                success: function (layero, index) {
+                    _this.list(index);
+                }
             });
         },
 
@@ -90,6 +96,11 @@
             var _this = this,
                 inputId = _this.options.$el.find('input').eq(0),
                 config = _this.options.config;
+
+            if (typeof config.fileDisplayClassBack === 'function') {
+                config.fileDisplayClassBack(data.data);
+                return;
+            }
 
             if (config.limit === 1) {
                 inputId.val(data.data.path);
