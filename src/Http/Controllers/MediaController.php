@@ -94,7 +94,7 @@ class MediaController
         try {
             (new ImgCompress($file->getRealPath(), 1))->compressImg($disk->path($dir) . '/' . $newName);
             $fileSize = filesize($disk->path($dir) . '/' . $newName);
-        } catch(\Exception $e) {
+        } catch(\Throwable $e) {
             Log::error($e->getFile() . $e->getLine() . $e->getMessage());
             $disk->putFileAs($dir, $file, $newName);
             $fileSize = $file->getSize();
