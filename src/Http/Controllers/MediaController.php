@@ -103,6 +103,10 @@ class MediaController
         $path = "$dir/$newName";
         $type = FileUtil::verifyFileType($file);
 
+        if (!$type) {
+            $type = 'other';
+        }
+
         $data = [
             'admin_id'       => Admin::user()->id ?? 0,
             'media_group_id' => $mediaGroupId,
