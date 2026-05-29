@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Logics\FileUploadLogic;
 
 class MediaController
 {
@@ -50,12 +51,19 @@ class MediaController
             } else {
                 $type = $value->type;
             }
+
+            if (!env('OSS_ON')) {
+                $itemUrl = Storage::disk(config('admin.upload.disk'))->url($value->path);
+            } else {
+                $itemUrl = env('OSS_DOMAIN') . '/' . $value->path;
+            }
+
             $dataList[] = array(
                 'id'               => $value->id,
                 'media_group_name' => $value->mediaGroup->name ?? '無',
                 'media_type'       => $type,
                 'path'             => $value->path,
-                'url'              => Storage::disk(config('admin.upload.disk'))->url($value->path),
+                'url'              => $itemUrl,
                 'size'             => FileUtil::formatBytes($value->size),
                 'file_ext'         => $value->file_ext,
                 'name'             => $value->file_name,
@@ -85,22 +93,33 @@ class MediaController
         $dir               = $move->dir;
         $fileNameIsEncrypt = $move->fileNameIsEncrypt;
 
-        $disk = Storage::disk(config('admin.upload.disk'));
-        $disk->makeDirectory($dir);
+        if (!env('OSS_ON')) {
+            $disk = Storage::disk(config('admin.upload.disk'));
+            $disk->makeDirectory($dir);
 
-        $newName = self::_getFileName($file, $fileNameIsEncrypt);
+            $newName = self::_getFileName($file, $fileNameIsEncrypt);
 
-        // 压缩图片
-        try {
-            (new ImgCompress($file->getRealPath(), 1))->compressImg($disk->path($dir) . '/' . $newName);
-            $fileSize = filesize($disk->path($dir) . '/' . $newName);
-        } catch(\Throwable $e) {
-            Log::error($e->getFile() . $e->getLine() . $e->getMessage());
-            $disk->putFileAs($dir, $file, $newName);
-            $fileSize = $file->getSize();
+            // 压缩图片
+            try {
+                (new ImgCompress($file->getRealPath(), 1))->compressImg($disk->path($dir) . '/' . $newName);
+                $fileSize = filesize($disk->path($dir) . '/' . $newName);
+            } catch(\Throwable $e) {
+                Log::error($e->getFile() . $e->getLine() . $e->getMessage());
+                $disk->putFileAs($dir, $file, $newName);
+                $fileSize = $file->getSize();
+            }
+
+            $path = "$dir/$newName";
+            $url = $disk->url($path);
+        } else {
+            $res = FileUploadLogic::uploadFile($file);
+            $path = $res['key'];
+            $url = $res['url'];
+            $newName = $res['key'];
+            $fileSize = filesize($file->getRealPath());
         }
 
-        $path = "$dir/$newName";
+
         $type = FileUtil::verifyFileType($file);
 
         if (!$type) {
@@ -121,7 +140,7 @@ class MediaController
         ];
         Media::query()->insert($data);
 
-        return $this->success(['name' => Helper::basename($path), 'path' => $path, 'media_type' => $type, 'url' => $disk->url($path)]);
+        return $this->success(['name' => Helper::basename($path), 'path' => $path, 'media_type' => $type, 'url' => $url]);
     }
 
     public function delete(Request $request)
@@ -137,12 +156,15 @@ class MediaController
 
         Media::query()->whereIn('id', $request->get('delete_ids'))->delete();
 
-        foreach ($request->get('delete_paths') as $v) {
-            $disk   = Storage::disk(config('admin.upload.disk'));
-            $exists = $disk->exists($v);
-            if ($exists)
-                $disk->delete($v);
+        if (!env('OSS_ON')) {
+            foreach ($request->get('delete_paths') as $v) {
+                $disk   = Storage::disk(config('admin.upload.disk'));
+                $exists = $disk->exists($v);
+                if ($exists)
+                    $disk->delete($v);
+            }
         }
+
 
         return $this->success(true);
     }
