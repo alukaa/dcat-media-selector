@@ -55,7 +55,7 @@ class MediaController
             if (!env('OSS_ON')) {
                 $itemUrl = Storage::disk(config('admin.upload.disk'))->url($value->path);
             } else {
-                $itemUrl = env('OSS_DOMAIN') . '/' . $value->path;
+                $itemUrl = 'https://' . env('OSS_BUCKET') . '.' . env('OSS_DOMAIN') . '/' . $value->path;
             }
 
             $dataList[] = array(
